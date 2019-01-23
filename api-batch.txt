@@ -1,0 +1,8 @@
+https://www.alphavantage.co/query?function=BATCH_STOCK_QUOTES&datatype=json&apikey=RGLPKI6YT1F4MH2U&symbols=AAPL,GOOGL,GE
+
+
+import urllib2
+response = urllib2.urlopen('https://www.nasdaq.com/screening/companies-by-name.aspx?letter=0&exchange=nasdaq&render=download')
+html = response.read()
+
+
