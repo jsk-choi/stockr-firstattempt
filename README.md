@@ -1,0 +1,2 @@
+# stockr
+Stock trading robot
