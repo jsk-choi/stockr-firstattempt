@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Web;
 
@@ -23,18 +25,27 @@ namespace stockr.AllSymbols
             {
                 var jsonStr = wc.DownloadString("https://api.iextrading.com/1.0/ref-data/symbols");
                 var symbolJson = Newtonsoft.Json.JsonConvert.DeserializeObject<IList<Symbol>>(jsonStr);
+                var dtNow = DateTime.Now;
 
-                var efSymbols = symbolJson.Select(x => new Symbols {
+                var efSymbols = symbolJson.Select(x => new Symbols
+                {
                     iexId = Convert.ToInt32(x.iexId),
                     Symbol = x.symbol,
                     SymbolName = x.name,
                     isEnabled = x.isEnabled,
-                    SymbolType = x.type
-                }).ToList();
+                    SymbolType = x.type,
+                    DateModified = dtNow
+                });
 
-                using (var ctx = new stockrDb()) {
-                    ctx.Symbols.AddRange(efSymbols);
-                    ctx.SaveChanges();
+                using (var ctx = new stockrDb())
+                {
+                    if (efSymbols.Any())
+                    {
+                        ctx.Symbols.AddRange(efSymbols);
+                        ctx.SaveChanges();
+
+                        ctx.Database.ExecuteSqlCommand("exec dbo.spSymbolsConsolidation");
+                    }
                 }
             }
         }

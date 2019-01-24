@@ -8,8 +8,8 @@ namespace stockr.Data
 
     public partial class Symbols
     {
-        [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        public int Id { get; set; }
+
         public int iexId { get; set; }
 
         [StringLength(50)]
@@ -22,5 +22,7 @@ namespace stockr.Data
 
         [StringLength(50)]
         public string SymbolType { get; set; }
+
+        public DateTime DateModified { get; set; }
     }
 }
