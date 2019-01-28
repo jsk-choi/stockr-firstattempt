@@ -6,11 +6,15 @@ namespace stockr.Data
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Quote_stag
+    [Table("Quote")]
+    public partial class Quote
     {
         public int Id { get; set; }
 
         public DateTime SystemTime { get; set; }
+
+        [StringLength(500)]
+        public string symbol { get; set; }
 
         public long? avgTotalVolume { get; set; }
 
@@ -24,9 +28,6 @@ namespace stockr.Data
         public decimal? close { get; set; }
 
         public long? closeTime { get; set; }
-
-        [StringLength(500)]
-        public string companyName { get; set; }
 
         public decimal? delayedPrice { get; set; }
 
@@ -65,8 +66,7 @@ namespace stockr.Data
         [StringLength(500)]
         public string latestSource { get; set; }
 
-        [StringLength(500)]
-        public string latestTime { get; set; }
+        public TimeSpan? latestTime { get; set; }
 
         public long? latestUpdate { get; set; }
 
@@ -83,15 +83,6 @@ namespace stockr.Data
         public decimal? peRatio { get; set; }
 
         public decimal? previousClose { get; set; }
-
-        [StringLength(500)]
-        public string primaryExchange { get; set; }
-
-        [StringLength(500)]
-        public string sector { get; set; }
-
-        [StringLength(500)]
-        public string symbol { get; set; }
 
         public decimal? week52High { get; set; }
 

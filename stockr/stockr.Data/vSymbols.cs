@@ -10,6 +10,7 @@ namespace stockr.Data
     {
         [Key]
         [Column(Order = 0)]
+        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int Id { get; set; }
 
         [Key]
@@ -30,8 +31,19 @@ namespace stockr.Data
         [StringLength(50)]
         public string SymbolType { get; set; }
 
+        [StringLength(500)]
+        public string companyName { get; set; }
+
+        [StringLength(500)]
+        public string primaryExchange { get; set; }
+
+        [StringLength(500)]
+        public string sector { get; set; }
+
         [Key]
         [Column(Order = 3)]
-        public DateTime DateModified { get; set; }
+        public DateTime DateModifiedSymbol { get; set; }
+
+        public DateTime? DateModifiedSymbolExtd { get; set; }
     }
 }

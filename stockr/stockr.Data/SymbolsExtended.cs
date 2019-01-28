@@ -6,23 +6,22 @@ namespace stockr.Data
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
 
-    public partial class Symbols
+    [Table("SymbolsExtended")]
+    public partial class SymbolsExtended
     {
         public int Id { get; set; }
 
-        public int iexId { get; set; }
-
-        [Required]
         [StringLength(50)]
-        public string Symbol { get; set; }
+        public string symbol { get; set; }
 
-        [StringLength(300)]
-        public string SymbolName { get; set; }
+        [StringLength(500)]
+        public string companyName { get; set; }
 
-        public bool? isEnabled { get; set; }
+        [StringLength(500)]
+        public string primaryExchange { get; set; }
 
-        [StringLength(50)]
-        public string SymbolType { get; set; }
+        [StringLength(500)]
+        public string sector { get; set; }
 
         public DateTime DateModified { get; set; }
     }

@@ -1,3 +1,5 @@
+USE stockr
+
 DROP TABLE dbo.Symbols
 GO
 

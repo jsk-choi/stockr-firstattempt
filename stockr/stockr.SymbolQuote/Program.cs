@@ -17,106 +17,95 @@ namespace stockr.SymbolQuote
         public Quote_stag quote { get; set; }
     }
 
-    //public class SymQuote
-    //{
-    //    public string symbol { get; set; }
-    //    public string companyName { get; set; }
-    //    public string primaryExchange { get; set; }
-    //    public string sector { get; set; }
-    //    public string calculationPrice { get; set; }
-    //    public double open { get; set; }
-    //    public long openTime { get; set; }
-    //    public double close { get; set; }
-    //    public long closeTime { get; set; }
-    //    public double high { get; set; }
-    //    public double low { get; set; }
-    //    public double latestPrice { get; set; }
-    //    public string latestSource { get; set; }
-    //    public string latestTime { get; set; }
-    //    public long latestUpdate { get; set; }
-    //    public int latestVolume { get; set; }
-    //    public double iexRealtimePrice { get; set; }
-    //    public int iexRealtimeSize { get; set; }
-    //    public long iexLastUpdated { get; set; }
-    //    public double delayedPrice { get; set; }
-    //    public long delayedPriceTime { get; set; }
-    //    public double extendedPrice { get; set; }
-    //    public double extendedChange { get; set; }
-    //    public double extendedChangePercent { get; set; }
-    //    public long extendedPriceTime { get; set; }
-    //    public double previousClose { get; set; }
-    //    public double change { get; set; }
-    //    public double changePercent { get; set; }
-    //    public double iexMarketPercent { get; set; }
-    //    public int iexVolume { get; set; }
-    //    public int avgTotalVolume { get; set; }
-    //    public int iexBidPrice { get; set; }
-    //    public int iexBidSize { get; set; }
-    //    public int iexAskPrice { get; set; }
-    //    public int iexAskSize { get; set; }
-    //    public long marketCap { get; set; }
-    //    public double peRatio { get; set; }
-    //    public double week52High { get; set; }
-    //    public int week52Low { get; set; }
-    //    public double ytdChange { get; set; }
-    //}
-
     class Program
     {
         static void Main(string[] args)
         {
-            var json = File.ReadAllText(@"C:\Users\jc\Desktop\JSN.json");
-            var jsonObj = JObject.Parse(json);
-            var jsonProps = jsonObj.Properties();
+            var timeUtc = DateTime.UtcNow;
+            TimeZoneInfo easternZone = TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
+            DateTime estTime = TimeZoneInfo.ConvertTimeFromUtc(timeUtc, easternZone);
 
-            var quoteList = jsonProps
-                .Select(x => x.Value.ToObject<Quote>())
-                .Select(x => x.quote).ToList();
+            var marketOpen = false;
 
             using (var ctx = new stockrDb()) {
-                ctx.Quote_stag.AddRange(quoteList);
-                ctx.SaveChanges();
+                marketOpen = ctx.MarketOpen.Where(x => x.DtOpen <= estTime && x.DtClose >= estTime).Any();
             }
 
-            //foreach (var prop in jsonProps)
-            //{
-            //    var name = prop.Name;
-            //    var quoteOuter = prop.Value.ToObject<Quote>();
-            //    quoteList.Add(quoteOuter.quote);
-            //}
+            DataUtil.Log($"Quote load - marketOpen: {marketOpen}");
 
+            if (!marketOpen) return;
 
+            DataUtil.Log($"Quote load start");
 
+            List<vSymbols> symb;
+            List<vSymbols> symbSegment;
 
-            //List<vSymbols> symb;
-            //List<vSymbols> symbSegment;
+            List<string> quoteUrls = new List<string>();
 
-            //List<string> quoteUrls = new List<string>();
+            using (var ctx = new stockrDb())
+            {
+                symb = ctx.vSymbols.Where(x => x.SymbolType.ToLower().Trim() == "cs" && x.isEnabled == true).ToList();
+            }
 
-            //using (var ctx = new stockrDb())
-            //{
-            //    symb = ctx.vSymbols.Where(x => x.SymbolType == "cs" && x.isEnabled == true).ToList();
-            //}
+            while (symb.Any())
+            {
+                symbSegment = symb.Take(150).ToList();
+                symb = symb.Except(symbSegment).ToList();
 
-            //while (symb.Any())
-            //{
-            //    symbSegment = symb.Take(175).ToList();
-            //    symb = symb.Except(symbSegment).ToList();
+                var url = @"https://api.iextrading.com/1.0/stock/market/batch?symbols={0}&types=quote";
+                var symbolCsv = string.Join(",", symbSegment.Select(x => x.Symbol).ToArray());
 
-            //    var url = @"https://api.iextrading.com/1.0/stock/market/batch?symbols={0}&types=quote";
-            //    var symbolCsv = string.Join(",", symbSegment.Select(x => x.Symbol).ToArray());
+                quoteUrls.Add(string.Format(url, symbolCsv));
+            }
 
-            //    quoteUrls.Add(string.Format(url, symbolCsv));
-            //}
+            DataUtil.Log($"Quote load segments: {quoteUrls.Count()}");
 
-            //using (WebClient wc = new WebClient())
-            //{
-            //    foreach (var url in quoteUrls)
-            //    {
-            //        var dtNow = DateTime.Now;
-            //        var jsonStr = wc.DownloadString(url);
-            //    }
-            //}
+            using (WebClient wc = new WebClient())
+            {
+                int ctr = 0;
+                foreach (var url in quoteUrls)
+                {
+                    ctr++;
+
+                    var dtNow = DateTime.Now;
+                    var jsonStr = wc.DownloadString(url);
+                    var jsonObj = JObject.Parse(jsonStr);
+                    var jsonProps = jsonObj.Properties();
+
+                    var quoteList = jsonProps
+                        .Select(x => x.Value.ToObject<Quote>())
+                        .Select(x => x.quote)
+                        .Select(c =>
+                        {
+                            c.SystemTime = dtNow;
+                            return c;
+                        })
+                        .ToList();
+
+                    try
+                    {
+                        using (var ctx = new stockrDb())
+                        {
+                            ctx.Quote_stag.AddRange(quoteList);
+                            ctx.SaveChanges();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        DataUtil.Log($"Quote load error: {ex.InnerException.InnerException.Message}");
+                    }
+
+                    DataUtil.Log($"Quote load segments: {ctr}-{quoteUrls.Count()}");
+                }
+            }
+
+            using (var ctx = new stockrDb())
+            {
+                ctx.Database.ExecuteSqlCommand("exec dbo.spSymbolsExtendedConsolidation");
+                ctx.Database.ExecuteSqlCommand("exec dbo.spQuotesConsolidation");
+            }
+
+            DataUtil.Log($"Quote load done");
         }
     }
 }

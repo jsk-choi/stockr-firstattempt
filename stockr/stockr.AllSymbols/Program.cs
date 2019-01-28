@@ -21,6 +21,8 @@ namespace stockr.AllSymbols
     {
         static void Main(string[] args)
         {
+            DataUtil.Log($"Symbol load start");
+
             using (WebClient wc = new WebClient())
             {
                 var jsonStr = wc.DownloadString("https://api.iextrading.com/1.0/ref-data/symbols");
@@ -47,6 +49,8 @@ namespace stockr.AllSymbols
                         ctx.Database.ExecuteSqlCommand("exec dbo.spSymbolsConsolidation");
                     }
                 }
+
+                DataUtil.Log($"Symbol load end - {efSymbols.Count()}");
             }
         }
     }

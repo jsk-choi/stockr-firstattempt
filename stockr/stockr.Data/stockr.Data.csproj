@@ -50,11 +50,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataUtil.cs" />
+    <Compile Include="Log.cs" />
+    <Compile Include="MarketOpen.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Quote.cs" />
     <Compile Include="Quote_stag.cs" />
     <Compile Include="stockrDb.cs" />
     <Compile Include="Symbols.cs" />
+    <Compile Include="SymbolsExtended.cs" />
     <Compile Include="vSymbols.cs" />
+    <Compile Include="vSymbolsExtended.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

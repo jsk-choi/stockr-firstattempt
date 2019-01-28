@@ -1,12 +1,13 @@
-use stockr
+--truncate table [dbo].[Quote]
+--truncate table [dbo].[Quote_stag]
+--truncate table [dbo].[Symbols]
+--truncate table [dbo].[SymbolsExtended]
 
---select * from Symbols where SymbolType = 'cs' and isEnabled = 1
+--select * from [dbo].[Quote]
+--select * from [dbo].[Quote_stag]
+--select * from [dbo].[Symbols]
+--select * from [dbo].[SymbolsExtended]
 
-with durr as (
-	select top 100 Symbol 
-	from Symbols 
-	where SymbolType = 'cs' and isEnabled = 1
-)
-select STRING_AGG(Symbol, ',') from durr
+--select * from [dbo].[Symbols] order by Symbol, Id
 
-select * from dbo.vSymbols
+select * from [dbo].[Log] order by Id desc

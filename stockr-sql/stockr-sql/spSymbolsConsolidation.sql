@@ -1,4 +1,5 @@
-DROP PROCEDURE [dbo].[spSymbolsConsolidation]
+IF OBJECT_ID('spSymbolsConsolidation') IS NOT NULL
+	DROP PROCEDURE [dbo].[spSymbolsConsolidation]
 GO
 
 CREATE PROC [dbo].[spSymbolsConsolidation]
