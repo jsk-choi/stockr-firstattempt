@@ -1,0 +1,82 @@
+<?xml version="1.0"?>
+<SqlWorkbenchSqlProject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Name="stockr-sql">
+  <Items>
+    <LogicalFolder Name="Connections" Type="2" Sorted="true">
+      <Items>
+        <ConnectionNode Name="JCDEV\JCSQL:JCDEV\jc">
+          <Created>2019-01-28T09:36:05.8302029-08:00</Created>
+          <Type>SQL</Type>
+          <Server>JCDEV\JCSQL</Server>
+          <UserName />
+          <Authentication>Windows Authentication</Authentication>
+          <InitialDB />
+          <LoginTimeout>30</LoginTimeout>
+          <ExecutionTimeout>0</ExecutionTimeout>
+          <ConnectionProtocol>NotSpecified</ConnectionProtocol>
+          <ApplicationName />
+        </ConnectionNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Queries" Type="0" Sorted="true">
+      <Items>
+        <FileNode Name="__scratch.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:JCDEV\JCSQL:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>JCDEV\JCSQL</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>__scratch.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Quote.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Quote.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Quote_stag.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Quote_stag.sql</FullPath>
+        </FileNode>
+        <FileNode Name="spSymbolsConsolidation.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>spSymbolsConsolidation.sql</FullPath>
+        </FileNode>
+        <FileNode Name="spSymbolsExtendedConsolidation.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>spSymbolsExtendedConsolidation.sql</FullPath>
+        </FileNode>
+        <FileNode Name="Symbols.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>Symbols.sql</FullPath>
+        </FileNode>
+        <FileNode Name="SymbolsExtended.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>SymbolsExtended.sql</FullPath>
+        </FileNode>
+        <FileNode Name="vSymbols.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>vSymbols.sql</FullPath>
+        </FileNode>
+        <FileNode Name="vSymbolsExtended.sql">
+          <AssociatedConnectionMoniker />
+          <AssociatedConnSrvName />
+          <AssociatedConnUserName />
+          <FullPath>vSymbolsExtended.sql</FullPath>
+        </FileNode>
+      </Items>
+    </LogicalFolder>
+    <LogicalFolder Name="Miscellaneous" Type="3" Sorted="true">
+      <Items />
+    </LogicalFolder>
+  </Items>
+</SqlWorkbenchSqlProject>
