@@ -88,6 +88,9 @@ namespace stockr.SymbolQuote
                         {
                             ctx.Quote_stag.AddRange(quoteList);
                             ctx.SaveChanges();
+
+                            ctx.Database.ExecuteSqlCommand("exec dbo.spSymbolsExtendedConsolidation");
+                            ctx.Database.ExecuteSqlCommand("exec dbo.spQuotesConsolidation");
                         }
                     }
                     catch (Exception ex)
@@ -101,8 +104,6 @@ namespace stockr.SymbolQuote
 
             using (var ctx = new stockrDb())
             {
-                ctx.Database.ExecuteSqlCommand("exec dbo.spSymbolsExtendedConsolidation");
-                ctx.Database.ExecuteSqlCommand("exec dbo.spQuotesConsolidation");
             }
 
             DataUtil.Log($"Quote load done");

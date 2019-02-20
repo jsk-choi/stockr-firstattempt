@@ -26,8 +26,8 @@
           <FullPath>__scratch.sql</FullPath>
         </FileNode>
         <FileNode Name="Quote.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:JCDEV\JCSQL:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>JCDEV\JCSQL</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>Quote.sql</FullPath>
         </FileNode>
@@ -37,9 +37,21 @@
           <AssociatedConnUserName />
           <FullPath>Quote_stag.sql</FullPath>
         </FileNode>
+        <FileNode Name="spQuotesCleanup.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:JCDEV\JCSQL:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>JCDEV\JCSQL</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>spQuotesCleanup.sql</FullPath>
+        </FileNode>
+        <FileNode Name="spQuotesConsolidation.sql">
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:JCDEV\JCSQL:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>JCDEV\JCSQL</AssociatedConnSrvName>
+          <AssociatedConnUserName />
+          <FullPath>spQuotesConsolidation.sql</FullPath>
+        </FileNode>
         <FileNode Name="spSymbolsConsolidation.sql">
-          <AssociatedConnectionMoniker />
-          <AssociatedConnSrvName />
+          <AssociatedConnectionMoniker>8c91a03d-f9b4-46c0-a305-b5dcc79ff907:JCDEV\JCSQL:True</AssociatedConnectionMoniker>
+          <AssociatedConnSrvName>JCDEV\JCSQL</AssociatedConnSrvName>
           <AssociatedConnUserName />
           <FullPath>spSymbolsConsolidation.sql</FullPath>
         </FileNode>

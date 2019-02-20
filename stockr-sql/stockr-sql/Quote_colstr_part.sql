@@ -1,10 +1,10 @@
 use stockr
 
-IF OBJECT_ID('Quote') IS NOT NULL
-	DROP TABLE [dbo].[Quote]
+IF OBJECT_ID('Quote_colstr_part') IS NOT NULL
+	DROP TABLE [dbo].[Quote_colstr_part]
 GO
 
-CREATE TABLE [dbo].[Quote](
+CREATE TABLE [dbo].[Quote_colstr_part](
 	[Id] [int] IDENTITY(1,1) NOT NULL,
 	[SystemTime] DATETIME NOT NULL,
 	[symbol] [nvarchar](500) NULL,
@@ -44,14 +44,17 @@ CREATE TABLE [dbo].[Quote](
 	[week52High] [decimal](32, 5) NULL,
 	[week52Low] [bigint] NULL,
 	[ytdChange] [decimal](32, 5) NULL
-	CONSTRAINT PK_Quote PRIMARY KEY (Id)
+	CONSTRAINT PK_Quote_colstr_part PRIMARY KEY (Id)
 )
 GO
 
-CREATE NONCLUSTERED INDEX IX_Quote_Symbol
-    ON dbo.Quote (Symbol)
-	INCLUDE (iexLastUpdated, latestPrice);
+CREATE NONCLUSTERED INDEX IX_Quote_colstr_part_Symbol
+    ON dbo.Quote_colstr_part (Symbol)
+	INCLUDE (SystemTime);
 
-CREATE NONCLUSTERED INDEX IX_Quote_SystemTime
-    ON dbo.Quote (SystemTime)
+CREATE COLUMNSTORE INDEX IX_Quote_colstr_part 
+	ON dbo.Quote_colstr_part (symbol, latestPrice, SystemTime);
+
+CREATE NONCLUSTERED INDEX IX_Quote_colstr_part_SystemTime
+    ON dbo.Quote_colstr_part (SystemTime)
 	INCLUDE (symbol, latestPrice);

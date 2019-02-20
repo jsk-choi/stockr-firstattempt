@@ -1,13 +1,43 @@
---truncate table [dbo].[Quote]
---truncate table [dbo].[Quote_stag]
---truncate table [dbo].[Symbols]
---truncate table [dbo].[SymbolsExtended]
+use stockr
 
---select * from [dbo].[Quote]
---select * from [dbo].[Quote_stag]
---select * from [dbo].[Symbols]
---select * from [dbo].[SymbolsExtended]
 
---select * from [dbo].[Symbols] order by Symbol, Id
+;
+with ss as (
+	select
+		q.symbol
+		, min(q.latestPrice) [min]
+		, max(q.latestPrice) [max]
+		, AVG(q.latestPrice) [ave]
+	from Quote q
+		join Symbols s
+			on q.symbol = s.symbol
+	where CAST(q.SystemTime AS DATE) = CAST(GETDATE() AS DATE)
+		and s.SymbolType = 'cs'
+		and calculationPrice != 'previousclose'
+	group by q.symbol
+)
+select *
+	, [ave] / (([min] + [max]) / 2)
+	, ([max] - [min]) / [max]
+from ss
+order by 5 desc
 
-select * from [dbo].[Log] order by Id desc
+
+;
+with ss as (
+	select
+		q.symbol
+		, min(q.latestPrice) [min]
+		, max(q.latestPrice) [max]
+	from Quote q
+		join Symbols s
+			on q.symbol = s.symbol
+	where CAST(q.SystemTime AS DATE) = CAST(GETDATE() AS DATE)
+		and s.SymbolType = 'cs'
+		and calculationPrice != 'previousclose'
+	group by q.symbol
+)
+select *
+	, ([max] - [min]) / [min]
+from ss
+order by 4 desc
